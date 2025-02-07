@@ -25,7 +25,7 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
 
   const getMenuImageUrl = useCallback(async (menu: Menu) => {
     if (!menu.file_bucket || !menu.file_path) return null;
-    
+
     try {
       const { data, error } = await supabaseClient.storage
         .from(menu.file_bucket)
@@ -47,7 +47,7 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
     const loadImages = async () => {
       const imageUrls: Record<string, string> = {};
       const loadingStates: Record<string, boolean> = {};
-      
+
       for (const menu of menus) {
         loadingStates[menu.id] = true;
         const url = await getMenuImageUrl(menu);
@@ -56,7 +56,7 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
         }
         loadingStates[menu.id] = false;
       }
-      
+
       setMenuImages(imageUrls);
       setLoadingImages(loadingStates);
     };
@@ -69,14 +69,14 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
       {menus.map(menu => {
         const imageUrl = menuImages[menu.id];
         const isLoading = loadingImages[menu.id];
-        
+
         return (
-          <Link 
-            key={menu.id} 
+          <Link
+            key={menu.id}
             href={`/menus/${menu.id}`}
             className={cn(
-              "no-underline focus-visible:outline-none focus-visible:ring-2",
-              "focus-visible:ring-ring focus-visible:ring-offset-2"
+              'no-underline focus-visible:outline-none focus-visible:ring-2',
+              'focus-visible:ring-ring focus-visible:ring-offset-2'
             )}
           >
             <Card className="overflow-hidden transition-shadow hover:shadow-lg">
@@ -104,7 +104,7 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
                     <h3 className="font-medium line-clamp-1">{menu.label}</h3>
-                    <span 
+                    <span
                       className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
                       style={{ backgroundColor: '#849F78', color: 'white' }}
                     >
@@ -112,16 +112,18 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
                     </span>
                   </div>
                   <div className="pt-2 space-y-1 text-xs text-muted-foreground">
-                    <p className="flex items-center gap-1">
-                      <span>{t('menus.owner')}:</span>
-                      <span className="text-foreground max-w-[150px] truncate">{menu.owner}</span>
-                    </p>
                     <p>
-                      {t('menus.createdAt')}: <span className="text-foreground">{format(new Date(menu.created_at), 'PPP', { locale: fr })}</span>
+                      {t('menus.createdAt')}:{' '}
+                      <span className="text-foreground">
+                        {format(new Date(menu.created_at), 'PPP', { locale: fr })}
+                      </span>
                     </p>
                     {menu.updated_date && (
                       <p>
-                        {t('menus.updatedAt')}: <span className="text-foreground">{format(new Date(menu.updated_date), 'PPP', { locale: fr })}</span>
+                        {t('menus.updatedAt')}:{' '}
+                        <span className="text-foreground">
+                          {format(new Date(menu.updated_date), 'PPP', { locale: fr })}
+                        </span>
                       </p>
                     )}
                   </div>
