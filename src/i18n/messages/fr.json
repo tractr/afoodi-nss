@@ -29,11 +29,18 @@
     "loading": "Chargement..."
   },
   "navigation": {
-    "home": "Dashboard",
+    "home": "Mes menus",
     "mainMenu": "Menu principal",
     "todos": "Tâches",
     "manageMenus": "Gérer les menus",
-    "menus": "Menus"
+    "about": "À propos",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter",
+    "profile": "Profil",
+    "mobile": {
+      "menu": "Ouvrir le menu",
+      "close": "Fermer le menu"
+    }
   },
   "settings": {
     "title": "Paramètres",
@@ -62,6 +69,7 @@
   },
   "menus": {
     "title": "Menus",
+    "noImage": "Aucune image",
     "description": "Gérez vos menus et leurs analyses",
     "add": "Ajouter un menu",
     "addDescription": "Ajoutez un nouveau menu à analyser",
@@ -76,11 +84,46 @@
     "selectMenu": "Sélectionner un menu...",
     "createMenu": "Créer un menu",
     "editMenu": "Modifier le menu",
-    "version": "Version",
-    "actions": "Actions",
-    "image": "Image",
-    "noImage": "Aucune image disponible",
-    "details": "Voir les détails",
+    "version": {
+      "title": "Version {number}",
+      "history": "Historique des versions"
+    },
+    "actions": {
+      "edit": "Modifier",
+      "download": "Télécharger",
+      "delete": "Supprimer",
+      "back": "Retour",
+      "settings": "Paramètres"
+    },
+    "image": {
+      "expanded": "{label} (vue agrandie)",
+      "noImage": "Aucune image"
+    },
+    "details": {
+      "title": "Détails du menu",
+      "basicInfo": "Informations de base",
+      "systemInfo": "Informations système",
+      "results": "Résultats",
+      "status": {
+        "progress": "{progress}%",
+        "duration": "{minutes} minutes"
+      }
+    },
+    "createdAt": "Créé le",
+    "updatedAt": "Modifié le",
+    "listView": "Vue liste",
+    "gridView": "Vue grille",
+    "owner": "Propriétaire",
+    "filters": {
+      "title": "Filtres",
+      "sortBy": "Trier par",
+      "sortOptions": {
+        "newest": "Plus récent",
+        "oldest": "Plus ancien",
+        "name": "Nom",
+        "version": "Version"
+      }
+    },
     "steps": {
       "menu_ocr": "Extraction du texte",
       "menu_recipe": "Analyse des recettes",
@@ -117,6 +160,44 @@
     },
     "analyze": "Analyse",
     "activeMenu": "Menu actif",
-    "changeMenu": "Changer de menu"
+    "changeMenu": "Changer de menu",
+    "tabs": {
+      "analysis": "Analyse du menu",
+      "recipes": "Recettes",
+      "ingredients": "Ingrédients"
+    },
+    "delete": "Supprimer le menu",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce menu ?",
+    "stats": {
+      "version": "Version",
+      "owner": "Propriétaire",
+      "createdAt": "Créé le",
+      "updatedAt": "Modifié le",
+      "progress": "Progression",
+      "duration": "Durée",
+      "dishes": "Plats",
+      "recipes": "Recettes",
+      "ingredients": "Ingrédients",
+      "environmentalScore": "Score env.",
+      "minutes": "{count} min",
+      "comingSoon": {
+        "recipes": "Liste des recettes à venir",
+        "ingredients": "Liste des ingrédients à venir"
+      },
+      "totalSteps": "Étapes totales",
+      "completedSteps": "Étapes terminées"
+    },
+    "table": {
+      "columns": {
+        "image": "Image",
+        "name": "Nom",
+        "version": "Version",
+        "owner": "Propriétaire",
+        "createdAt": "Créé le",
+        "updatedAt": "Modifié le"
+      },
+      "version": "v{number}",
+      "noUpdate": "-"
+    }
   }
 }

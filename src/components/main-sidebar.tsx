@@ -11,40 +11,43 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
-import { Home, User2, ChevronUp, Monitor, LogOut, LucideProps, Utensils, Plus } from 'lucide-react';
+import { LayoutDashboard, User2, ChevronUp, Monitor, LogOut, LucideProps, Info, Plus, Menu } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
 import supabaseClient from '@/lib/supabase-client';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { usePathname } from 'next/navigation';
-import { ForwardRefExoticComponent, RefAttributes, useState, useRef } from 'react';
+import { ForwardRefExoticComponent, RefAttributes, useState } from 'react';
 import { SettingsModal } from '@/components/settings-modal';
 import { useTranslations } from 'next-intl';
-import { useMenus } from '@/hooks/use-menus';
 
 // Menu items
 const items: Array<{
   titleKey: string;
   url: string;
   icon: ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>>;
+  external?: boolean;
 }> = [
   {
     titleKey: 'navigation.home',
     url: '/',
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
-    titleKey: 'navigation.menus',
-    url: '/menus',
-    icon: Utensils,
+    titleKey: 'navigation.about',
+    url: 'http://afoodi.io/',
+    icon: Info,
+    external: true,
   },
 ];
 
@@ -53,82 +56,61 @@ export default function MainSidebar() {
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
   const t = useTranslations();
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const { menus, activeMenuId, setActiveMenuId, isLoading } = useMenus();
+  const { setOpenMobile } = useSidebar();
 
   const _logout = async () => {
     const { error } = await supabaseClient.auth.signOut();
     if (error) {
       alert(error.message);
     }
-
     window.location.reload();
   };
 
   return (
-    <Sidebar>
+    <Sidebar className="bg-background shadow-md z-10">
       <SidebarHeader>
-        <div className="flex-1 flex items-center justify-center p-4">
+        <div className="flex items-center justify-between p-4 md:justify-center">
           <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setOpenMobile(false)}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+        </div>
+        <div className="px-4 pb-4">
+          <Link href="/menus/new" className="w-full">
+            <Button
+              variant="outline"
+              size="default"
+              className="w-full bg-brand hover:bg-brand/90 text-brand-foreground border-0"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              <span className="text-sm font-medium">{t('menus.add')}</span>
+            </Button>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <div className="px-2 py-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div
-                    ref={triggerRef}
-                    className="w-full flex flex-col items-start p-3 border rounded-md bg-white hover:bg-accent/50 cursor-pointer"
-                  >
-                    <div className="text-xs font-medium text-muted-foreground mb-1">
-                      {t('menus.activeMenu')}
-                    </div>
-                    <div className="text-sm">
-                      {menus?.find(m => m.id === activeMenuId)?.label ?? t('menus.selectMenu')}
-                    </div>
-                    <button type="button" className="mt-1 text-xs text-blue-600 hover:underline">
-                      {t('menus.changeMenu')}
-                    </button>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="start"
-                  style={{ width: triggerRef.current ? triggerRef.current.offsetWidth : undefined }}
-                >
-                  {isLoading ? (
-                    <DropdownMenuItem disabled>{t('common.loading')}</DropdownMenuItem>
-                  ) : (
-                    <>
-                      {menus?.map(menu => (
-                        <DropdownMenuItem key={menu.id} onClick={() => setActiveMenuId(menu.id)}>
-                          {menu.label}
-                        </DropdownMenuItem>
-                      ))}
-                      <DropdownMenuItem asChild className="border-t">
-                        <Link href="/menus/new" className="flex items-center">
-                          <Plus className="w-4 h-4 mr-2" />
-                          {t('menus.createMenu')}
-                        </Link>
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </SidebarGroupContent>
-        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>{t('navigation.mainMenu')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map(item => (
                 <SidebarMenuItem key={item.titleKey}>
-                  <SidebarMenuButton asChild className={pathname === item.url ? 'bg-accent' : ''}>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{t(item.titleKey)}</span>
+                  <SidebarMenuButton
+                    asChild
+                    className={!item.external && pathname === item.url ? 'bg-accent' : ''}
+                  >
+                    <Link
+                      href={item.url}
+                      target={item.external ? '_blank' : undefined}
+                      rel={item.external ? 'noopener noreferrer' : undefined}
+                    >
+                      <item.icon className="h-4 w-4 mr-2" />
+                      {t(item.titleKey)}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -138,40 +120,32 @@ export default function MainSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center justify-between gap-2">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton data-testid="user-button">
-                    <User2 />
-                    {currentUser?.data?.email ? (
-                      <span className="h-6 inline-flex items-center text-sm truncate flex-shrink">
-                        {currentUser?.data?.email}
-                      </span>
-                    ) : (
-                      <Skeleton className="h-6 w-full" />
-                    )}
-                    <ChevronUp className="ml-auto" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-                  <DropdownMenuItem onClick={_logout}>
-                    <LogOut className="h-[1.2rem] w-[1.2rem]" />
-                    <span data-testid="logout-button">{t('actions.logout')}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowSettings(true)}>
-                    <Monitor className="h-[1.2rem] w-[1.2rem]" />
-                    <span>{t('actions.openSettings')}</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </SidebarMenuItem>
-          </SidebarMenu>
-
-          <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="w-full flex items-center justify-between h-9 px-3 text-sm font-medium text-muted-foreground hover:text-primary"
+            >
+              <div className="flex items-center">
+                <User2 className="h-4 w-4 mr-2" />
+                <span>{currentUser?.data?.email}</span>
+              </div>
+              <ChevronUp className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[--radix-dropdown-menu-trigger-width]">
+            <DropdownMenuItem onClick={() => setShowSettings(true)}>
+              <Monitor className="mr-2 h-4 w-4" />
+              <span>{t('navigation.settings')}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={_logout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>{t('navigation.logout')}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </SidebarFooter>
+      <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
     </Sidebar>
   );
 }

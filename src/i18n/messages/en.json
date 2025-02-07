@@ -41,11 +41,18 @@
     "loading": "Loading..."
   },
   "navigation": {
-    "home": "Dashboard",
+    "home": "My menus",
     "mainMenu": "Main menu",
     "todos": "Todos",
     "manageMenus": "Manage menus",
-    "menus": "Menus"
+    "about": "About",
+    "settings": "Settings",
+    "logout": "Logout",
+    "profile": "Profile",
+    "mobile": {
+      "menu": "Open menu",
+      "close": "Close menu"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -62,6 +69,7 @@
   },
   "menus": {
     "title": "Menus",
+    "noImage": "No image",
     "description": "Manage your menus and their analysis",
     "add": "Add menu",
     "addDescription": "Add a new menu to analyze",
@@ -76,11 +84,46 @@
     "selectMenu": "Select a menu...",
     "createMenu": "Create Menu",
     "editMenu": "Edit Menu",
-    "version": "Version",
-    "actions": "Actions",
-    "image": "Image",
-    "noImage": "No image available",
-    "details": "View details",
+    "version": {
+      "title": "Version {number}",
+      "history": "Version history"
+    },
+    "actions": {
+      "edit": "Edit",
+      "download": "Download",
+      "delete": "Delete",
+      "back": "Back",
+      "settings": "Settings"
+    },
+    "image": {
+      "expanded": "{label} (expanded view)",
+      "noImage": "No image"
+    },
+    "details": {
+      "title": "Menu Details",
+      "basicInfo": "Basic Information",
+      "systemInfo": "System Information",
+      "results": "Results",
+      "status": {
+        "progress": "{progress}%",
+        "duration": "{minutes} minutes"
+      }
+    },
+    "createdAt": "Created on",
+    "updatedAt": "Updated on",
+    "listView": "List view",
+    "gridView": "Grid view",
+    "owner": "Owner",
+    "filters": {
+      "title": "Filters",
+      "sortBy": "Sort by",
+      "sortOptions": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "name": "Name",
+        "version": "Version"
+      }
+    },
     "steps": {
       "menu_ocr": "Text recognition",
       "menu_recipe": "Recipe extraction",
@@ -117,6 +160,42 @@
     },
     "analyze": "Analyze",
     "activeMenu": "Active menu",
-    "changeMenu": "Change menu"
+    "changeMenu": "Change menu",
+    "tabs": {
+      "analysis": "Menu Analysis",
+      "recipes": "Recipes",
+      "ingredients": "Ingredients"
+    },
+    "stats": {
+      "version": "Version",
+      "owner": "Owner",
+      "createdAt": "Created on",
+      "updatedAt": "Modified on",
+      "progress": "Progress",
+      "duration": "Duration",
+      "dishes": "Dishes",
+      "recipes": "Recipes",
+      "ingredients": "Ingredients",
+      "environmentalScore": "Env. Score",
+      "minutes": "{count} min",
+      "comingSoon": {
+        "recipes": "Recipe list coming soon",
+        "ingredients": "Ingredient list coming soon"
+      },
+      "totalSteps": "Total steps",
+      "completedSteps": "Completed steps"
+    },
+    "table": {
+      "columns": {
+        "image": "Image",
+        "name": "Name",
+        "version": "Version",
+        "owner": "Owner",
+        "createdAt": "Created on",
+        "updatedAt": "Updated on"
+      },
+      "version": "v{number}",
+      "noUpdate": "-"
+    }
   }
 }
