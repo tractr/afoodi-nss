@@ -3,12 +3,9 @@
 import { Tables } from '@/types/database';
 import { MenusDataTable } from './menus-data-table';
 import { MenusGridView } from './menus-grid-view';
-import { useTranslations } from 'next-intl';
 import supabaseClient from '@/lib/supabase-client';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-
-type Menu = Tables<'menus'>;
 
 interface MenusViewProps {
   className?: string;
