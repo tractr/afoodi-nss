@@ -13,7 +13,17 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, User2, ChevronUp, Monitor, LogOut, LucideProps, Info, Plus, Menu } from 'lucide-react';
+import {
+  LayoutDashboard,
+  User2,
+  ChevronUp,
+  Monitor,
+  LogOut,
+  LucideProps,
+  Info,
+  Plus,
+  Menu,
+} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +31,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
 import supabaseClient from '@/lib/supabase-client';
