@@ -78,7 +78,6 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
           <TableHead>{t('menus.table.columns.image')}</TableHead>
           <TableHead>{t('menus.table.columns.name')}</TableHead>
           <TableHead>{t('menus.table.columns.version')}</TableHead>
-          <TableHead>{t('menus.table.columns.owner')}</TableHead>
           <TableHead>{t('menus.table.columns.createdAt')}</TableHead>
           <TableHead>{t('menus.table.columns.updatedAt')}</TableHead>
         </TableRow>
@@ -124,9 +123,6 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
                 >
                   {t('menus.table.version', { number: menu.version })}
                 </span>
-              </TableCell>
-              <TableCell>
-                <span className="text-sm">{menu.owner}</span>
               </TableCell>
               <TableCell>{format(new Date(menu.created_at), 'PPP', { locale: fr })}</TableCell>
               <TableCell>
