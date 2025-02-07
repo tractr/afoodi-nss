@@ -1,6 +1,5 @@
 'use client';
 
-import { Tables } from '@/types/database';
 import { MenusDataTable } from './menus-data-table';
 import { MenusGridView } from './menus-grid-view';
 import supabaseClient from '@/lib/supabase-client';
