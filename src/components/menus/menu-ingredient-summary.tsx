@@ -57,7 +57,7 @@ export function MenuIngredientSummary({ data }: MenuIngredientSummaryProps) {
       averageEfScore: stat.totalEfScore / stat.dishCount,
       dishes: Array.from(stat.dishes),
     }))
-    .sort((a, b) => b.dishCount - a.dishCount);
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="w-full">

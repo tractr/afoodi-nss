@@ -19,6 +19,9 @@ interface MenuSummaryProps {
 export function MenuSummary({ data }: MenuSummaryProps) {
   const t = useTranslations();
 
+  // Sort dishes by name
+  const sortedDishes = [...data.dishes].sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <div className="w-full">
       <Table>
@@ -35,7 +38,7 @@ export function MenuSummary({ data }: MenuSummaryProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.dishes.map(dish => (
+          {sortedDishes.map(dish => (
             <TableRow key={dish.name}>
               <TableCell className="font-medium">{dish.name}</TableCell>
               <TableCell>

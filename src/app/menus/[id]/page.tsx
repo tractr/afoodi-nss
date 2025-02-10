@@ -43,6 +43,7 @@ import { MenuEnvironmentalImpactOutput } from '@/interfaces/steps/menu_environme
 import { MenuSummary } from '@/components/menus/menu-summary';
 import { MenuSummary as MenuSummaryType } from '@/interfaces/steps/menu_summary.interfaces';
 import { MenuIngredientSummary } from '@/components/menus/menu-ingredient-summary';
+import { Badge } from '@/components/ui/badge';
 
 export default function MenuPage() {
   const params = useParams();
@@ -177,6 +178,25 @@ export default function MenuPage() {
     const minutes = Math.floor(totalDuration / (1000 * 60));
     return minutes;
   };
+
+  // Add this function to get menu summary data
+  const menuSummaryData = steps?.find(step => step.step === 'menu_summary')?.output as unknown as
+    | MenuSummaryType
+    | undefined;
+
+  // Add this function to get counts
+  const getCounts = () => {
+    if (!menuSummaryData?.dishes) return { dishes: 0, ingredients: 0 };
+
+    const dishes = menuSummaryData.dishes.length;
+    const ingredients = new Set(
+      menuSummaryData.dishes.flatMap(dish => dish.dish.ingredients.map(ing => ing.name))
+    ).size;
+
+    return { dishes, ingredients };
+  };
+
+  const { dishes, ingredients } = getCounts();
 
   return (
     <LayoutNav containerClassName="bg-muted/50">
@@ -433,14 +453,28 @@ export default function MenuPage() {
                       className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
                       <Utensils className="h-4 w-4" />
-                      {t('menus.tabs.recipes')}
+                      <span className="flex items-center gap-2">
+                        {t('menus.tabs.recipes')}
+                        {menuSummaryData && (
+                          <Badge variant="secondary" className="ml-2">
+                            {dishes}
+                          </Badge>
+                        )}
+                      </span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="ingredients"
                       className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
                     >
                       <Apple className="h-4 w-4" />
-                      {t('menus.tabs.ingredients')}
+                      <span className="flex items-center gap-2">
+                        {t('menus.tabs.ingredients')}
+                        {menuSummaryData && (
+                          <Badge variant="secondary" className="ml-2">
+                            {ingredients}
+                          </Badge>
+                        )}
+                      </span>
                     </TabsTrigger>
                   </TabsList>
                 </div>
