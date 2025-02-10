@@ -310,6 +310,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      find_agribalyse_ingredient: {
+        Args: {
+          ingredient_name: string
+          similarity_threshold: number
+        }
+        Returns: {
+          name: string
+          similarity_score: number
+          ef_score: number
+        }[]
+      }
       get_run_owner: {
         Args: {
           run: string
@@ -433,3 +444,4 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+

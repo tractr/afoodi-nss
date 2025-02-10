@@ -196,6 +196,24 @@
       },
       "version": "v{number}",
       "noUpdate": "-"
+    },
+    "summary": {
+      "name": "Name",
+      "category": "Category",
+      "type": "Type",
+      "ingredients": "Ingredients",
+      "price": "Price",
+      "efScore": "EF Score",
+      "margin": "Margin",
+      "afoodiScore": "Afoodi Score",
+      "ingredientsList": "Ingredients list"
+    },
+    "ingredients": {
+      "name": "Ingredient",
+      "dishCount": "Used in dishes",
+      "avgProportion": "Avg. proportion",
+      "avgEfScore": "Avg. EF score",
+      "usedIn": "Used in"
     }
   }
 }

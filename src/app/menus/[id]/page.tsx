@@ -40,6 +40,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ImageModal } from '@/components/menus/image-modal';
 import { MenuRecipeOutput } from '@/interfaces/steps/menu_recipe.interface';
 import { MenuEnvironmentalImpactOutput } from '@/interfaces/steps/menu_environmental_impact.interfaces';
+import { MenuSummary } from '@/components/menus/menu-summary';
+import { MenuSummary as MenuSummaryType } from '@/interfaces/steps/menu_summary.interfaces';
+import { MenuIngredientSummary } from '@/components/menus/menu-ingredient-summary';
 
 export default function MenuPage() {
   const params = useParams();
@@ -445,14 +448,32 @@ export default function MenuPage() {
                   <MenuSteps menuId={menuId as string} />
                 </TabsContent>
                 <TabsContent value="recipes">
-                  <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
-                    <p>{t('menus.stats.comingSoon.recipes')}</p>
-                  </div>
+                  {steps?.find(step => step.step === 'menu_summary')?.output ? (
+                    <MenuSummary
+                      data={
+                        steps.find(step => step.step === 'menu_summary')
+                          ?.output as unknown as MenuSummaryType
+                      }
+                    />
+                  ) : (
+                    <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
+                      <p>{t('menus.stats.noData')}</p>
+                    </div>
+                  )}
                 </TabsContent>
                 <TabsContent value="ingredients">
-                  <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
-                    <p>{t('menus.stats.comingSoon.ingredients')}</p>
-                  </div>
+                  {steps?.find(step => step.step === 'menu_summary')?.output ? (
+                    <MenuIngredientSummary
+                      data={
+                        steps.find(step => step.step === 'menu_summary')
+                          ?.output as unknown as MenuSummaryType
+                      }
+                    />
+                  ) : (
+                    <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
+                      <p>{t('menus.stats.noData')}</p>
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </div>

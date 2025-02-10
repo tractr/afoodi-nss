@@ -185,7 +185,8 @@
         "ingredients": "Liste des ingrédients à venir"
       },
       "totalSteps": "Étapes totales",
-      "completedSteps": "Étapes terminées"
+      "completedSteps": "Étapes terminées",
+      "noData": "Aucune donnée disponible"
     },
     "table": {
       "columns": {
@@ -198,6 +199,24 @@
       },
       "version": "v{number}",
       "noUpdate": "-"
+    },
+    "summary": {
+      "name": "Nom",
+      "category": "Catégorie",
+      "type": "Type",
+      "ingredients": "Ingrédients",
+      "price": "Prix",
+      "efScore": "Score EF",
+      "margin": "Marge",
+      "afoodiScore": "Score Afoodi",
+      "ingredientsList": "Liste des ingrédients"
+    },
+    "ingredients": {
+      "name": "Ingrédient",
+      "dishCount": "Utilisé dans",
+      "avgProportion": "Proportion moy.",
+      "avgEfScore": "Score EF moy.",
+      "usedIn": "Utilisé dans"
     }
   }
 }
