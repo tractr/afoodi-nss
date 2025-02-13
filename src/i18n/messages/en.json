@@ -52,7 +52,8 @@
     "mobile": {
       "menu": "Open menu",
       "close": "Close menu"
-    }
+    },
+    "changePassword": "Change Password"
   },
   "settings": {
     "title": "Settings",

@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, User2, Monitor, LogOut, Menu, Plus, Info } from 'lucide-react';
+import { LayoutDashboard, User2, Monitor, LogOut, Menu, Plus, Info, Lock } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -124,6 +124,12 @@ export function MainNav() {
                   <Monitor className="mr-2 h-4 w-4" />
                   <span>{t('navigation.settings')}</span>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/change-password">
+                    <Lock className="mr-2 h-4 w-4" />
+                    <span>{t('navigation.changePassword')}</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>{t('navigation.logout')}</span>
@@ -190,6 +196,12 @@ export function MainNav() {
                   <DropdownMenuItem onClick={() => setShowSettings(true)}>
                     <Monitor className="mr-2 h-4 w-4" />
                     <span>{t('navigation.settings')}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/change-password">
+                      <Lock className="mr-2 h-4 w-4" />
+                      <span>{t('navigation.changePassword')}</span>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />

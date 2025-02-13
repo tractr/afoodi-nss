@@ -23,6 +23,7 @@ import {
   Info,
   Plus,
   Menu,
+  Lock,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -146,6 +147,12 @@ export default function MainSidebar() {
             <DropdownMenuItem onClick={() => setShowSettings(true)}>
               <Monitor className="mr-2 h-4 w-4" />
               <span>{t('navigation.settings')}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/change-password">
+                <Lock className="mr-2 h-4 w-4" />
+                <span>{t('navigation.changePassword')}</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={_logout}>
               <LogOut className="mr-2 h-4 w-4" />

@@ -40,7 +40,8 @@
     "mobile": {
       "menu": "Ouvrir le menu",
       "close": "Fermer le menu"
-    }
+    },
+    "changePassword": "Changer le mot de passe"
   },
   "settings": {
     "title": "Paramètres",
