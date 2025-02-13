@@ -518,9 +518,7 @@ export default function MenuPage() {
           menu={activeMenu}
           open={isDeleteDialogOpen}
           onOpenChange={setIsDeleteDialogOpen}
-          onDelete={() => {
-            router.push('/menus');
-          }}
+          onDelete={() => router.push('/')}
         />
       </div>
     </LayoutNav>
