@@ -62,7 +62,7 @@ export default function ChangePasswordPage() {
     >
       <Card className="max-w-md w-full">
         <CardHeader className="flex justify-center items-center gap-4">
-          <Image src="/images/Logo_1.svg" alt="logo" width={150} height={100} />
+          <Image src="/images/logo.svg" alt="logo" width={150} height={100} />
           <CardTitle className="text-center text-lg font-extrabold">
             {isSuccess ? 'Password Updated' : 'Change Your Password'}
           </CardTitle>
