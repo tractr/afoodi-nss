@@ -183,7 +183,8 @@
         "ingredients": "Ingredient list coming soon"
       },
       "totalSteps": "Total steps",
-      "completedSteps": "Completed steps"
+      "completedSteps": "Completed steps",
+      "noData": "No data available"
     },
     "table": {
       "columns": {

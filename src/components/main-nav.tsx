@@ -201,6 +201,7 @@ export function MainNav() {
           </div>
         </SheetContent>
       </Sheet>
+
       <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
     </div>
   );

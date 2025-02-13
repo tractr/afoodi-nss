@@ -154,6 +154,7 @@ export default function MainSidebar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarFooter>
+
       <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
     </Sidebar>
   );
