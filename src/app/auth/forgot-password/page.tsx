@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, CheckCircle2 } from 'lucide-react';
-import LayoutSidebar from '@/components/layouts/layout-sidebar';
+import LayoutSidebar from '@/components/layout-sidebar';
 import Image from 'next/image';
 import Link from 'next/link';
 import supabaseClient from '@/lib/supabase-client';
