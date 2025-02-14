@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, User2, Monitor, LogOut, Menu, Plus, Info } from 'lucide-react';
+import { LayoutDashboard, User2, Monitor, LogOut, Menu, Plus, Info, Lock } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -51,13 +51,13 @@ export function MainNav() {
   return (
     <div className="shadow-md bg-white">
       <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-        <div className="flex h-16 items-center mx-auto px-6">
+        <div className="flex h-16 items-center px-6">
           {/* Burger Menu (Mobile) */}
           <SheetTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden mr-2"
+              className="md:hidden"
               aria-label={t('navigation.mobile.menu')}
             >
               <Menu className="h-5 w-5" />
@@ -67,7 +67,7 @@ export function MainNav() {
           {/* Logo */}
           <Link
             href="/"
-            className="hover:opacity-80 transition-all mr-8"
+            className="hover:opacity-80 transition-all ml-2 md:ml-0"
             aria-label={t('common.logo')}
           >
             <Image src="/images/logo.svg" alt={t('common.logo')} width={100} height={40} />
@@ -75,7 +75,7 @@ export function MainNav() {
 
           {/* Main Menu and Profile (Desktop only) */}
           <nav
-            className="hidden md:flex items-center space-x-4"
+            className="hidden md:flex items-center ml-6 space-x-2"
             aria-label={t('navigation.mainMenu')}
           >
             {items.map(item =>
@@ -124,6 +124,12 @@ export function MainNav() {
                   <Monitor className="mr-2 h-4 w-4" />
                   <span>{t('navigation.settings')}</span>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/change-password">
+                    <Lock className="mr-2 h-4 w-4" />
+                    <span>{t('navigation.changePassword')}</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>{t('navigation.logout')}</span>
@@ -133,7 +139,7 @@ export function MainNav() {
           </nav>
 
           {/* Add Menu CTA */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center ml-4">
             <Link href="/menus/new">
               <Button
                 variant="outline"
@@ -191,6 +197,12 @@ export function MainNav() {
                     <Monitor className="mr-2 h-4 w-4" />
                     <span>{t('navigation.settings')}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/change-password">
+                      <Lock className="mr-2 h-4 w-4" />
+                      <span>{t('navigation.changePassword')}</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>{t('navigation.logout')}</span>
@@ -201,6 +213,7 @@ export function MainNav() {
           </div>
         </SheetContent>
       </Sheet>
+
       <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
     </div>
   );

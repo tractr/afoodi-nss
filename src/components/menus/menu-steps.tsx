@@ -311,7 +311,7 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
   const stepNumber = STEP_TYPES.indexOf(type) + 1;
 
   useEffect(() => {
-    if (!step || step.finished_at) {
+    if (!step || step.finished_at || step.error_message) {
       setElapsedTime(null);
       return;
     }

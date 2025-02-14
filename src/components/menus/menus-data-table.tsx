@@ -19,6 +19,9 @@ import supabaseClient from '@/lib/supabase-client';
 import { useCallback, useEffect, useState } from 'react';
 
 type Menu = Tables<'menus'>;
+const CACHE_PREFIX = 'menu_image_';
+const CACHE_EXPIRY_PREFIX = 'menu_image_expiry_';
+const CACHE_DURATION = 3000; // Cache for 50 minutes (slightly less than the signed URL expiry)
 
 interface MenusDataTableProps {
   menus: Menu[];
@@ -30,25 +33,66 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
   const [menuImages, setMenuImages] = useState<Record<string, string>>({});
   const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>({});
 
-  const getMenuImageUrl = useCallback(async (menu: Menu) => {
-    if (!menu.file_bucket || !menu.file_path) return null;
-
+  const getCachedImageUrl = useCallback((menuId: string): string | null => {
     try {
-      const { data, error } = await supabaseClient.storage
-        .from(menu.file_bucket)
-        .createSignedUrl(menu.file_path, 3600);
+      const cachedUrl = localStorage.getItem(CACHE_PREFIX + menuId);
+      const expiryTime = localStorage.getItem(CACHE_EXPIRY_PREFIX + menuId);
 
-      if (error) {
+      if (cachedUrl && expiryTime && Number(expiryTime) > Date.now()) {
+        return cachedUrl;
+      }
+
+      // Clear expired cache
+      if (cachedUrl || expiryTime) {
+        localStorage.removeItem(CACHE_PREFIX + menuId);
+        localStorage.removeItem(CACHE_EXPIRY_PREFIX + menuId);
+      }
+    } catch (error) {
+      console.warn('Error accessing localStorage:', error);
+    }
+    return null;
+  }, []);
+
+  const cacheImageUrl = useCallback((menuId: string, url: string) => {
+    try {
+      localStorage.setItem(CACHE_PREFIX + menuId, url);
+      localStorage.setItem(
+        CACHE_EXPIRY_PREFIX + menuId,
+        (Date.now() + CACHE_DURATION * 1000).toString()
+      );
+    } catch (error) {
+      console.warn('Error writing to localStorage:', error);
+    }
+  }, []);
+
+  const getMenuImageUrl = useCallback(
+    async (menu: Menu) => {
+      if (!menu.file_bucket || !menu.file_path) return null;
+
+      // Check cache first
+      const cachedUrl = getCachedImageUrl(menu.id);
+      if (cachedUrl) return cachedUrl;
+
+      try {
+        const { data, error } = await supabaseClient.storage
+          .from(menu.file_bucket)
+          .createSignedUrl(menu.file_path, 3600);
+
+        if (error) {
+          console.error('Error getting signed URL:', error);
+          return null;
+        }
+
+        // Cache the new URL
+        cacheImageUrl(menu.id, data.signedUrl);
+        return data.signedUrl;
+      } catch (error) {
         console.error('Error getting signed URL:', error);
         return null;
       }
-
-      return data.signedUrl;
-    } catch (error) {
-      console.error('Error getting signed URL:', error);
-      return null;
-    }
-  }, []);
+    },
+    [getCachedImageUrl, cacheImageUrl]
+  );
 
   useEffect(() => {
     const loadImages = async () => {
@@ -56,16 +100,23 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
       const loadingStates: Record<string, boolean> = {};
 
       for (const menu of menus) {
-        loadingStates[menu.id] = true;
-        const url = await getMenuImageUrl(menu);
-        if (url) {
-          imageUrls[menu.id] = url;
+        // Only load if we don't already have the image URL
+        if (!menuImages[menu.id]) {
+          loadingStates[menu.id] = true;
+          setLoadingImages(prev => ({ ...prev, [menu.id]: true }));
+
+          const url = await getMenuImageUrl(menu);
+          if (url) {
+            imageUrls[menu.id] = url;
+          }
+          loadingStates[menu.id] = false;
         }
-        loadingStates[menu.id] = false;
       }
 
-      setMenuImages(imageUrls);
-      setLoadingImages(loadingStates);
+      if (Object.keys(imageUrls).length > 0) {
+        setMenuImages(prev => ({ ...prev, ...imageUrls }));
+      }
+      setLoadingImages(prev => ({ ...prev, ...loadingStates }));
     };
 
     loadImages();
