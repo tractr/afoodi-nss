@@ -230,6 +230,8 @@
       "avgProportion": "Avg. proportion",
       "avgEfScore": "Avg. EF score",
       "usedIn": "Used in"
-    }
+    },
+    "delete": "Delete menu",
+    "confirmDelete": "Are you sure you want to delete this menu?"
   }
 }

@@ -234,7 +234,7 @@ export type Database = {
           error_message: string | null
           finished_at: string | null
           id: string
-          input: Json
+          input: Json | null
           output: Json | null
           run: string
           status: Database["public"]["Enums"]["stream_ai_process_status"]
@@ -245,7 +245,7 @@ export type Database = {
           error_message?: string | null
           finished_at?: string | null
           id?: string
-          input: Json
+          input?: Json | null
           output?: Json | null
           run: string
           status?: Database["public"]["Enums"]["stream_ai_process_status"]
@@ -256,7 +256,7 @@ export type Database = {
           error_message?: string | null
           finished_at?: string | null
           id?: string
-          input?: Json
+          input?: Json | null
           output?: Json | null
           run?: string
           status?: Database["public"]["Enums"]["stream_ai_process_status"]
@@ -444,4 +444,3 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
-

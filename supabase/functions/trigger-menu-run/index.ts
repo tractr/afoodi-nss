@@ -6,37 +6,7 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 
 import { createClient } from 'jsr:@supabase/supabase-js';
-
-// Logger utility to standardize log format
-const logger = {
-  info: (message: string, data?: Record<string, unknown>) => {
-    console.log(
-      JSON.stringify({
-        level: 'info',
-        timestamp: new Date().toISOString(),
-        message,
-        ...(data && { data }),
-      })
-    );
-  },
-  error: (message: string, error?: unknown) => {
-    console.error(
-      JSON.stringify({
-        level: 'error',
-        timestamp: new Date().toISOString(),
-        message,
-        error:
-          error instanceof Error
-            ? {
-                name: error.name,
-                message: error.message,
-                stack: error.stack,
-              }
-            : error,
-      })
-    );
-  },
-};
+import { launchRun, logger } from './helpers.ts';
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL') ?? '',
@@ -52,6 +22,7 @@ const corsHeaders = {
 
 Deno.serve(async req => {
   const requestId = crypto.randomUUID();
+  logger.info('Trigger menu run request received');
 
   // Handle OPTIONS request for CORS
   if (req.method === 'OPTIONS') {
@@ -128,61 +99,7 @@ Deno.serve(async req => {
     }
     logger.info('Created menu run context', { requestId });
 
-    // Get API URL from environment or use docker host in development
-    const api_url = Deno.env.get('STREAM_AI_API_URL');
-
-    if (!api_url) {
-      throw new Error('STREAM_AI_API_URL not configured');
-    }
-
-    // Launch processing request without waiting for response
-    logger.info('Triggering processing', {
-      requestId,
-      run_id,
-      endpoint: `${api_url}/stream-ai/${run_id}/process`,
-    });
-
-    // Initiate the fetch request and ensure it's sent
-    try {
-      // Create the promise but don't await its completion
-      const fetchPromise = fetch(`${api_url}/stream-ai/${run_id}/process`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-      });
-
-      // Handle the promise without blocking
-      fetchPromise
-        .then(response => {
-          logger.info('Processing request initiated', {
-            requestId,
-            run_id,
-            status: response.status,
-          });
-        })
-        .catch(error => {
-          logger.error('Processing trigger failed', {
-            error,
-            requestId,
-            run_id,
-          });
-        });
-
-      // Start the request execution
-      await Promise.race([
-        fetchPromise,
-        new Promise(resolve => setTimeout(resolve, 100)), // Small timeout to ensure request starts
-      ]);
-    } catch (error) {
-      logger.error('Failed to initiate processing request', {
-        error,
-        requestId,
-        run_id,
-      });
-      throw new Error('Failed to initiate processing');
-    }
+    await launchRun(run_id, { requestId, menu_id });
 
     const processingTime = Date.now() - startTime;
     logger.info('Request completed', {
