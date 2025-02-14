@@ -19,6 +19,8 @@ export function useMenuSteps(menuId?: string) {
         .from('stream_ai_menu_run_contexts')
         .select('run(stream_ai_run_steps(*))')
         .eq('menu', menuId)
+        .order('created_at', { ascending: false })
+        .limit(1)
         .single();
 
       const run = data?.run as unknown as Tables<'stream_ai_runs'> & {

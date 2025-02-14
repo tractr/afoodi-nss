@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "gen:types": "npx supabase gen types typescript --lang=typescript --local --schema public > src/types/database.ts",
+    "functions:deploy": "npx supabase functions deploy",
     "test": "vitest",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",

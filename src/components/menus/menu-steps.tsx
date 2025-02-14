@@ -54,12 +54,14 @@ interface StepCardProps {
   t: ReturnType<typeof useTranslations>;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  menuId: string;
 }
 
 interface EditStepInputDialogProps {
   step?: MenuStep;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  menuId: string;
 }
 
 interface StepHistoryDialogProps {
@@ -76,7 +78,7 @@ interface CancelStepDialogProps {
   t: ReturnType<typeof useTranslations>;
 }
 
-function EditStepInputDialog({ step, open, onOpenChange }: EditStepInputDialogProps) {
+function EditStepInputDialog({ step, open, onOpenChange, menuId }: EditStepInputDialogProps) {
   const t = useTranslations();
   const [input, setInput] = useState('');
   const { toast } = useToast();
@@ -91,22 +93,19 @@ function EditStepInputDialog({ step, open, onOpenChange }: EditStepInputDialogPr
   const mutation = useMutation({
     mutationFn: async (input: Json) => {
       if (!step) return;
-
-      const { data: newStep, error } = await supabaseClient
-        .from('stream_ai_run_steps')
-        .insert({
-          run: step.run,
-          step: step.step,
+      const { error } = await supabaseClient.functions.invoke('override_run_step', {
+        body: {
+          runStepId: step.id,
           input,
-        })
-        .select()
-        .single();
+        },
+      });
 
       if (error) throw error;
-      return newStep;
+      return;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['menu-steps'] });
+      queryClient.invalidateQueries({ queryKey: ['menu', menuId] });
       toast({
         title: t('menus.steps.editSuccess'),
         description: t('menus.steps.editSuccessDescription'),
@@ -294,7 +293,7 @@ function CancelStepDialog({ step, open, onOpenChange, t }: CancelStepDialogProps
   );
 }
 
-function StepCard({ steps, type, t, isCollapsed, onToggleCollapse }: StepCardProps) {
+function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: StepCardProps) {
   const [elapsedTime, setElapsedTime] = useState<Duration | null>(null);
   const [isInputExpanded, setIsInputExpanded] = useState(false);
   const [isOutputExpanded, setIsOutputExpanded] = useState(false);
@@ -564,7 +563,12 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse }: StepCardPro
           </CardContent>
         )}
       </Card>
-      <EditStepInputDialog step={step} open={isEditInputOpen} onOpenChange={setIsEditInputOpen} />
+      <EditStepInputDialog
+        step={step}
+        open={isEditInputOpen}
+        onOpenChange={setIsEditInputOpen}
+        menuId={menuId}
+      />
       <StepHistoryDialog steps={steps} open={isHistoryOpen} onOpenChange={setIsHistoryOpen} t={t} />
       <CancelStepDialog step={step} open={isCancelOpen} onOpenChange={setIsCancelOpen} t={t} />
     </>
@@ -651,6 +655,7 @@ export function MenuSteps({ menuId }: MenuStepsProps) {
             t={t}
             isCollapsed={collapsedSteps[type]}
             onToggleCollapse={() => toggleStepCollapse(type)}
+            menuId={menuId}
           />
         ))}
       </div>
