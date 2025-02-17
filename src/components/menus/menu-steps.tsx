@@ -93,7 +93,7 @@ function EditStepInputDialog({ step, open, onOpenChange, menuId }: EditStepInput
   const mutation = useMutation({
     mutationFn: async (input: Json) => {
       if (!step) return;
-      const { error } = await supabaseClient.functions.invoke('override_run_step', {
+      const { error } = await supabaseClient.functions.invoke('override-run-step', {
         body: {
           runStepId: step.id,
           input,
