@@ -277,7 +277,7 @@ supabase start
 
 # In a separate terminal, serve the Edge Function
 supabase functions serve trigger-menu-run --no-verify-jwt --env-file .env
-supabase functions serve run-relaunch --no-verify-jwt --env-file .env
+supabase functions serve override-run-step --no-verify-jwt --env-file .env
 ```
 
 The function will be available at `http://localhost:54321/functions/v1/trigger-menu-run`

@@ -4,7 +4,7 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
-import { createClient } from 'jsr:@supabase/supabase-js';
+import { createClient, SupabaseClient } from 'jsr:@supabase/supabase-js';
 
 // CORS headers
 const corsHeaders = {
@@ -13,12 +13,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const supabaseClient = createClient(
+const supabaseClient: SupabaseClient = createClient(
   Deno.env.get('SUPABASE_URL') ?? '',
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
 );
 
-export async function launchRunOverride(runId: string, overrideInput?: Record<string, unknown>) {
+export async function launchRunOverrided(runId: string) {
   // Get API URL from environment or use docker host in development
   const api_url = Deno.env.get('STREAM_AI_API_URL');
 
@@ -29,13 +29,14 @@ export async function launchRunOverride(runId: string, overrideInput?: Record<st
   // Initiate the fetch request and ensure it's sent
   try {
     // Create the promise but don't await its completion
-    const fetchPromise = fetch(`${api_url}/stream-ai/${runId}/override`, {
+    const fetchPromise = fetch(`${api_url}/stream-ai/${runId}/process`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        input_data: overrideInput,
+        auto_walk: true,
+        is_current_step: true,
       }),
     });
 
@@ -43,7 +44,6 @@ export async function launchRunOverride(runId: string, overrideInput?: Record<st
     fetchPromise
       .then(response => {
         console.log('Processing request initiated', {
-          input_data: overrideInput,
           run_id: runId,
           status: response.status,
         });
@@ -51,7 +51,6 @@ export async function launchRunOverride(runId: string, overrideInput?: Record<st
       .catch(error => {
         console.error('Processing trigger failed', {
           error,
-          input_data: overrideInput,
           run_id: runId,
         });
       });
@@ -64,11 +63,152 @@ export async function launchRunOverride(runId: string, overrideInput?: Record<st
   } catch (error) {
     console.error('Failed to initiate override request', {
       error,
-      input_data: overrideInput,
       run_id: runId,
     });
     throw new Error('Failed to initiate override request');
   }
+}
+
+async function duplicateMenuRunContext(oldRunId: string, newRunId: string) {
+  // Fetch the original menu run context
+  const { data: originalContext, error: contextError } = await supabaseClient
+    .from('stream_ai_menu_run_contexts')
+    .select('*')
+    .eq('run', oldRunId)
+    .single();
+
+  if (contextError) {
+    console.error('Menu run context not found', { contextError });
+    return; // Not throwing error as this might be optional
+  }
+
+  if (originalContext) {
+    // Create a new menu run context with the new run ID
+    const { error: newContextError } = await supabaseClient
+      .from('stream_ai_menu_run_contexts')
+      .insert({
+        menu: originalContext.menu,
+        run: newRunId,
+      });
+
+    if (newContextError) {
+      console.error('Failed to create new menu run context', { newContextError });
+      throw new Error('Failed to create new menu run context');
+    }
+  }
+}
+
+async function duplicatePreviousSteps(
+  oldRunId: string,
+  newRunId: string,
+  currentStepId: string,
+  overrideInput?: Record<string, unknown>
+) {
+  // Fetch the current step to get its created_at
+  const { data: currentStep, error: currentStepError } = await supabaseClient
+    .from('stream_ai_run_steps')
+    .select('created_at')
+    .eq('id', currentStepId)
+    .single();
+
+  if (currentStepError || !currentStep) {
+    console.error('Current step not found', { currentStepError });
+    throw new Error('Current step not found');
+  }
+
+  // Fetch all previous steps from the old run
+  const { data: previousSteps, error: previousStepsError } = await supabaseClient
+    .from('stream_ai_run_steps')
+    .select('*')
+    .eq('run', oldRunId)
+    .lt('created_at', currentStep.created_at)
+    .order('created_at', { ascending: true });
+
+  if (previousStepsError) {
+    console.error('Failed to fetch previous steps', { previousStepsError });
+    throw new Error('Failed to fetch previous steps');
+  }
+
+  if (!previousSteps || previousSteps.length === 0) {
+    return;
+  }
+
+  // Duplicate each previous step
+  for (let i = 0; i < previousSteps.length; i++) {
+    const step = previousSteps[i];
+    const isLastStep = i === previousSteps.length - 1;
+
+    const { error: newStepError } = await supabaseClient.from('stream_ai_run_steps').insert({
+      run: newRunId,
+      step: step.step,
+      input: step.input,
+      output: isLastStep ? overrideInput : step.output,
+      created_at: step.created_at,
+      finished_at: step.finished_at,
+      error: step.error,
+      status: step.status,
+    });
+
+    if (newStepError) {
+      console.error('Failed to create new step', { newStepError });
+      throw new Error('Failed to create new step');
+    }
+  }
+}
+
+async function duplicateRun(runStepId: string, overrideInput?: Record<string, unknown>) {
+  // Fetch the original run step and its associated run
+  const { data: runStep, error: runStepError } = await supabaseClient
+    .from('stream_ai_run_steps')
+    .select('*, run(*)')
+    .eq('id', runStepId)
+    .single();
+
+  if (runStepError || !runStep) {
+    console.error('Run step not found', { runStepError });
+    throw new Error('Run step not found');
+  }
+
+  // Create a new run with status 'created'
+  const { data: newRun, error: newRunError } = await supabaseClient
+    .from('stream_ai_runs')
+    .insert({
+      status: 'created',
+      current_step: runStep.step,
+      type: runStep.run.type,
+      owner: runStep.run.owner,
+    })
+    .select('id, type')
+    .single();
+
+  if (newRunError || !newRun) {
+    throw new Error('Failed to create new run');
+  }
+
+  // After creating the new run and before duplicating context, duplicate previous steps
+  try {
+    await duplicatePreviousSteps(runStep.run.id, newRun.id, runStepId, overrideInput);
+  } catch (error) {
+    console.error('Failed to duplicate previous steps', { error });
+    throw new Error('Failed to duplicate previous steps');
+  }
+
+  // After duplicating steps, duplicate the menu run context if it exists
+  try {
+    switch (newRun.type) {
+      case 'menu':
+        await duplicateMenuRunContext(runStep.run.id, newRun.id);
+        break;
+      default:
+        console.error('Unsupported duplicate run type', { runType: newRun.type });
+        break;
+    }
+  } catch (error) {
+    console.error('Failed to duplicate menu run context', { error });
+    throw new Error('Failed to duplicate menu run context');
+  }
+
+  return newRun;
 }
 
 Deno.serve(async req => {
@@ -85,48 +225,25 @@ Deno.serve(async req => {
     // Get input parameters
     const { runStepId, input } = await req.json();
 
-    console.log('Override run step launched', { runStepId, input });
+    console.log('Override run step launched', { runStepId });
 
-    // Fetch the original run step and its associated run
-    const { data: runStep, error: runStepError } = await supabaseClient
-      .from('stream_ai_run_steps')
-      .select('*, run(*)')
-      .eq('id', runStepId)
-      .single();
+    let newRun;
 
-    if (runStepError || !runStep) {
-      console.error('Run step not found', { runStepError });
-      return new Response(JSON.stringify({ error: 'Run step not found' }), {
-        status: 404,
+    try {
+      newRun = await duplicateRun(runStepId, input);
+    } catch (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: error.message === 'Run step not found' ? 404 : 500,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
     }
 
-    // Create a new run with status 'created'
-    const { data: newRun, error: newRunError } = await supabaseClient
-      .from('stream_ai_runs')
-      .insert({
-        status: 'created',
-        current_step: runStep.run.current_step,
-        type: runStep.run.type,
-        owner: runStep.run.owner,
-      })
-      .select()
-      .single();
-
-    if (newRunError || !newRun) {
-      return new Response(JSON.stringify({ error: 'Failed to create new run' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-      });
-    }
-
-    await launchRunOverride(newRun.id, input);
+    await launchRunOverrided(newRun.id);
 
     return new Response(
       JSON.stringify({
         success: true,
-        newRun,
+        newRun: newRun.id,
       }),
       {
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
