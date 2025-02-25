@@ -15,6 +15,8 @@ import { useRouter } from 'next/navigation';
 import supabaseClient from '@/lib/supabase-client';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/hooks/use-toast';
 
 type LoginFormInputs = {
   email: string;
@@ -26,6 +28,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const codeExchangeInProgress = useRef(false);
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
@@ -40,6 +43,8 @@ export default function LoginPage() {
       // Check for code in query params
       const params = new URLSearchParams(window.location.search);
       const code = params.get('code');
+
+      console.log(window.location.search, window.location.hash)
 
       if (code && !codeExchangeInProgress.current) {
         codeExchangeInProgress.current = true;
@@ -118,6 +123,29 @@ export default function LoginPage() {
     handleAuthParams();
   }, [router, queryClient, setError, t]);
 
+  useEffect(() => {
+    // Handle error parameters from URL
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+    const errorDescription = params.get('error_description');
+    const errorCode = params.get('error_code');
+
+    if (error && errorDescription) {
+      toast({
+        variant: 'destructive',
+        title: t('auth.authError'),
+        description: decodeURIComponent(errorDescription),
+      });
+
+      // Clean URL from error parameters
+      params.delete('error');
+      params.delete('error_description');
+      params.delete('error_code');
+      const newUrl = window.location.pathname + (params.toString() ? `?${params.toString()}` : '');
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [toast, t]);
+
   const onSubmit = async (input: LoginFormInputs) => {
     setIsLoading(true);
     try {
@@ -145,6 +173,7 @@ export default function LoginPage() {
       containerClassName="bg-muted/50"
       contentClassName="flex w-full h-full items-center justify-center"
     >
+      <Toaster />
       <Card className="w-full max-w-md">
         <CardHeader className="flex items-center justify-center gap-4">
           <Image src="/images/logo.svg" alt={t('common.logo')} width={150} height={100} />
