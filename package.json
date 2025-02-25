@@ -10,6 +10,7 @@
     "lint": "next lint",
     "gen:types": "npx supabase gen types typescript --lang=typescript --local --schema public > src/types/database.ts",
     "functions:deploy": "npx supabase functions deploy",
+    "format": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "test": "vitest",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -78,5 +79,12 @@
     "tailwindcss": "^3.4.14",
     "typescript": "^5",
     "vitest": "^2.1.5"
+  },
+  "eslintConfig": {
+    "extends": [
+      "next/core-web-vitals",
+      "plugin:prettier/recommended"
+    ],
+    "root": true
   }
 }

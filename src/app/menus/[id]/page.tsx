@@ -106,8 +106,8 @@ export default function MenuPage() {
   if (menuLoading || !activeMenu) {
     return (
       <LayoutNav containerClassName="bg-muted/50">
-        <div className="container max-w-7xl mx-auto py-4">
-          <div className="flex justify-between items-center mb-6">
+        <div className="container mx-auto max-w-7xl py-4">
+          <div className="mb-6 flex items-center justify-between">
             <Skeleton className="h-9 w-24" />
             <div className="flex items-center gap-2">
               <Skeleton className="h-8 w-32" />
@@ -115,8 +115,8 @@ export default function MenuPage() {
             </div>
           </div>
 
-          <Card className="shadow-lg border-0 p-12">
-            <div className="grid md:grid-cols-2 gap-6">
+          <Card className="border-0 p-12 shadow-lg">
+            <div className="grid gap-6 md:grid-cols-2">
               <Skeleton className="h-[400px] rounded-lg" />
               <div className="flex flex-col gap-6">
                 <Skeleton className="h-8 w-3/4" />
@@ -129,9 +129,9 @@ export default function MenuPage() {
 
             {/* Tabs Skeleton */}
             <div className="mt-8">
-              <div className="flex justify-center mb-6 relative">
-                <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" />
-                <div className="bg-gray-100 p-1 shadow-inner relative z-10 rounded-lg flex gap-2">
+              <div className="relative mb-6 flex justify-center">
+                <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-border" />
+                <div className="relative z-10 flex gap-2 rounded-lg bg-gray-100 p-1 shadow-inner">
                   {[1, 2, 3].map(i => (
                     <Skeleton key={i} className="h-8 w-32 rounded" />
                   ))}
@@ -141,10 +141,10 @@ export default function MenuPage() {
               {/* Steps Skeleton */}
               <div className="space-y-4">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="flex items-center gap-4 p-4 rounded-lg border bg-white">
+                  <div key={i} className="flex items-center gap-4 rounded-lg border bg-white p-4">
                     <Skeleton className="h-8 w-8 rounded-full" />
                     <div className="flex-1">
-                      <Skeleton className="h-4 w-1/4 mb-2" />
+                      <Skeleton className="mb-2 h-4 w-1/4" />
                       <Skeleton className="h-3 w-2/3" />
                     </div>
                     <Skeleton className="h-6 w-16" />
@@ -200,9 +200,9 @@ export default function MenuPage() {
 
   return (
     <LayoutNav containerClassName="bg-muted/50">
-      <div className="container max-w-7xl mx-auto py-4">
+      <div className="container mx-auto max-w-7xl py-4">
         {/* Navigation and Actions */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <Button variant="ghost" size="sm" onClick={() => router.back()} className="gap-2">
             <ArrowLeft className="h-4 w-4" />
             {t('menus.actions.back')}
@@ -258,27 +258,27 @@ export default function MenuPage() {
         </div>
 
         {/* Hero Section - Image and Info */}
-        <Card className="shadow-lg border-0 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
+        <Card className="mx-auto border-0 p-4 shadow-lg sm:p-6 md:p-8 lg:p-10 xl:p-12">
+          <div className="grid gap-8 md:grid-cols-2">
             {/* Mobile title only */}
-            <div className="md:hidden mb-4">
+            <div className="mb-4 md:hidden">
               <h1 className="text-3xl font-bold">{activeMenu.label}</h1>
             </div>
 
             {/* Image */}
-            <div className="overflow-hidden rounded-l-lg h-full">
+            <div className="h-full overflow-hidden rounded-l-lg">
               {loadingImage ? (
                 <Skeleton className="h-full w-full" />
               ) : menuImageUrl ? (
                 <>
                   <button
                     onClick={() => setIsImageModalOpen(true)}
-                    className="relative w-full h-full min-h-[400px]"
+                    className="relative h-full min-h-[400px] w-full"
                   >
                     <Image
                       src={menuImageUrl}
                       alt={activeMenu.label}
-                      className="object-cover object-top rounded-lg"
+                      className="rounded-lg object-cover object-top"
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       priority
@@ -292,8 +292,8 @@ export default function MenuPage() {
                   />
                 </>
               ) : (
-                <div className="flex flex-col h-full min-h-[400px] items-center justify-center">
-                  <FileText className="w-12 h-12 text-muted-foreground" />
+                <div className="flex h-full min-h-[400px] flex-col items-center justify-center">
+                  <FileText className="h-12 w-12 text-muted-foreground" />
                   <span className="mt-2 text-muted-foreground">{t('menus.image.noImage')}</span>
                 </div>
               )}
@@ -302,7 +302,7 @@ export default function MenuPage() {
             {/* Menu Info */}
             <div className="py-6">
               <div className="flex flex-col gap-6">
-                <h1 className="text-4xl font-bold tracking-tight mb-5 hidden md:block">
+                <h1 className="mb-5 hidden text-4xl font-bold tracking-tight md:block">
                   {activeMenu.label}
                 </h1>
 
@@ -334,7 +334,7 @@ export default function MenuPage() {
                     )}
                   </div>
 
-                  <div className="flex flex-col my-2">
+                  <div className="my-2 flex flex-col">
                     <div className="h-px bg-gray-200" />
                     <div className="h-px bg-gray-50" />
                   </div>
@@ -357,7 +357,7 @@ export default function MenuPage() {
                     </span>
                   </div>
 
-                  <div className="flex flex-col my-2">
+                  <div className="my-2 flex flex-col">
                     <div className="h-px bg-gray-200" />
                     <div className="h-px bg-gray-50" />
                   </div>
@@ -438,19 +438,19 @@ export default function MenuPage() {
           <div className="mt-8 md:mt-12">
             <div>
               <Tabs defaultValue="analysis" className="w-full">
-                <div className="flex justify-center mb-6 relative">
-                  <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-border" />
-                  <TabsList className="bg-gray-100 p-1 shadow-inner relative z-10">
+                <div className="relative mb-6 flex justify-center">
+                  <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-border" />
+                  <TabsList className="relative z-10 bg-gray-100 p-1 shadow-inner">
                     <TabsTrigger
                       value="analysis"
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
+                      className="flex items-center gap-2 px-5 py-1 text-sm data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow"
                     >
                       <BarChart3 className="h-4 w-4" />
                       {t('menus.tabs.analysis')}
                     </TabsTrigger>
                     <TabsTrigger
                       value="recipes"
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
+                      className="flex items-center gap-2 px-5 py-1 text-sm data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow"
                     >
                       <Utensils className="h-4 w-4" />
                       <span className="flex items-center gap-2">
@@ -464,7 +464,7 @@ export default function MenuPage() {
                     </TabsTrigger>
                     <TabsTrigger
                       value="ingredients"
-                      className="flex items-center gap-2 data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow text-sm px-5 py-1"
+                      className="flex items-center gap-2 px-5 py-1 text-sm data-[state=active]:bg-brand data-[state=active]:text-brand-foreground data-[state=active]:shadow"
                     >
                       <Apple className="h-4 w-4" />
                       <span className="flex items-center gap-2">
@@ -490,7 +490,7 @@ export default function MenuPage() {
                       }
                     />
                   ) : (
-                    <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
+                    <div className="flex min-h-[400px] items-center justify-center text-center text-muted-foreground">
                       <p>{t('menus.stats.noData')}</p>
                     </div>
                   )}
@@ -504,7 +504,7 @@ export default function MenuPage() {
                       }
                     />
                   ) : (
-                    <div className="text-center text-muted-foreground min-h-[400px] flex items-center justify-center">
+                    <div className="flex min-h-[400px] items-center justify-center text-center text-muted-foreground">
                       <p>{t('menus.stats.noData')}</p>
                     </div>
                   )}

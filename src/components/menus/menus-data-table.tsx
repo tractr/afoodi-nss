@@ -141,11 +141,11 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
           return (
             <TableRow
               key={menu.id}
-              className="cursor-pointer hover:bg-accent/50 transition-colors"
+              className="cursor-pointer transition-colors hover:bg-accent/50"
               onClick={() => router.push(`/menus/${menu.id}`)}
             >
               <TableCell>
-                <div className="block w-16 relative aspect-square">
+                <div className="relative block aspect-square w-16">
                   {isLoading ? (
                     <Skeleton className="h-full w-full rounded-md" />
                   ) : imageUrl ? (
@@ -154,13 +154,13 @@ export function MenusDataTable({ menus }: MenusDataTableProps) {
                         src={imageUrl}
                         alt={menu.label}
                         fill
-                        className="object-cover object-top rounded-md"
+                        className="rounded-md object-cover object-top"
                         sizes="64px"
                       />
-                      <div className="absolute inset-0 bg-black/20 rounded-md" />
+                      <div className="absolute inset-0 rounded-md bg-black/20" />
                     </>
                   ) : (
-                    <div className="h-full w-full bg-muted rounded-md" />
+                    <div className="h-full w-full rounded-md bg-muted" />
                   )}
                 </div>
               </TableCell>

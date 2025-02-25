@@ -116,7 +116,7 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
   }, [menus, getMenuImageUrl]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {menus.map(menu => {
         const imageUrl = menuImages[menu.id];
         const isLoading = loadingImages[menu.id];
@@ -154,7 +154,7 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
               <CardContent className="p-4">
                 <div className="space-y-1">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-medium line-clamp-1">{menu.label}</h3>
+                    <h3 className="line-clamp-1 font-medium">{menu.label}</h3>
                     <span
                       className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
                       style={{ backgroundColor: '#849F78', color: 'white' }}
@@ -162,7 +162,7 @@ export function MenusGridView({ menus }: MenusGridViewProps) {
                       v{menu.version}
                     </span>
                   </div>
-                  <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                  <div className="space-y-1 pt-2 text-xs text-muted-foreground">
                     <p>
                       {t('menus.createdAt')}:{' '}
                       <span className="text-foreground">

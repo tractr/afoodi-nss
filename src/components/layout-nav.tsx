@@ -15,21 +15,21 @@ export default function LayoutNav({
   containerClassName?: string;
   contentClassName?: string;
 }) {
-  const isSidebarMode = useNavigationStore((state) => state.isSidebarMode);
+  const isSidebarMode = useNavigationStore(state => state.isSidebarMode);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <NavigationWrapper />
       <main
         className={cn(
-          "flex-1 flex flex-col overflow-auto p-4 md:p-6",
-          !isSidebarMode && "pt-[80px] md:pt-[88px]",
-          isSidebarMode && "pt-[80px] md:pt-6 md:pl-[17.5rem]",
+          'flex flex-1 flex-col overflow-auto p-4 md:p-6',
+          !isSidebarMode && 'pt-[80px] md:pt-[88px]',
+          isSidebarMode && 'pt-[80px] md:pl-[17.5rem] md:pt-6',
           containerClassName
         )}
       >
-        <div className={cn("flex-1 w-full max-w-7xl mx-auto", className)}>
-          <div className={cn("flex-1", contentClassName)}>{children}</div>
+        <div className={cn('mx-auto w-full max-w-7xl flex-1', className)}>
+          <div className={cn('flex-1', contentClassName)}>{children}</div>
         </div>
       </main>
     </div>

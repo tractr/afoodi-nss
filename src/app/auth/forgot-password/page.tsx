@@ -56,8 +56,8 @@ export default function ForgotPasswordPage() {
       containerClassName="bg-muted/50"
       contentClassName="flex w-full h-full items-center justify-center"
     >
-      <Card className="max-w-md w-full">
-        <CardHeader className="flex justify-center items-center gap-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="flex items-center justify-center gap-4">
           <Image src="/images/logo.svg" alt={t('common.logo')} width={150} height={100} />
           <CardTitle className="text-center text-lg font-extrabold">
             {t('auth.resetPassword.title')}
@@ -68,7 +68,7 @@ export default function ForgotPasswordPage() {
             <div className="space-y-6">
               <Alert className="border-green-500 bg-green-50">
                 <CheckCircle2 className="h-5 w-5 text-green-500" />
-                <AlertDescription className="text-green-700 ml-2">
+                <AlertDescription className="ml-2 text-green-700">
                   {t('auth.resetPassword.successMessage')}
                 </AlertDescription>
               </Alert>

@@ -51,17 +51,17 @@ export function MenuSummary({ data }: MenuSummaryProps) {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <div className="flex items-center gap-1 justify-end">
+                      <div className="flex items-center justify-end gap-1">
                         <span>{dish.dish.ingredients.length}</span>
                         <Info className="h-4 w-4 text-muted-foreground" />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-sm">
-                        <div className="font-semibold mb-1">
+                        <div className="mb-1 font-semibold">
                           {t('menus.summary.ingredientsList')}:
                         </div>
-                        <ul className="list-disc list-inside">
+                        <ul className="list-inside list-disc">
                           {dish.dish.ingredients.map(ingredient => (
                             <li key={ingredient.name}>
                               {ingredient.name} ({(ingredient.proportion * 100).toFixed(1)}%)

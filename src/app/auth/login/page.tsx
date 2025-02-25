@@ -145,8 +145,8 @@ export default function LoginPage() {
       containerClassName="bg-muted/50"
       contentClassName="flex w-full h-full items-center justify-center"
     >
-      <Card className="max-w-md w-full">
-        <CardHeader className="flex justify-center items-center gap-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="flex items-center justify-center gap-4">
           <Image src="/images/logo.svg" alt={t('common.logo')} width={150} height={100} />
           <CardTitle className="text-center text-lg font-extrabold">
             {t('auth.signInTitle')}

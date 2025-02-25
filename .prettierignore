@@ -1,1 +1,12 @@
-components/ui/*
+src/types/database.ts
+components/ui
+node_modules
+dist
+.github
+.vscode
+.storybook
+.next
+.env
+.env.local
+.env.development.local
+.env.test.local

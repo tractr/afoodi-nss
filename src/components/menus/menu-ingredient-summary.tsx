@@ -85,7 +85,7 @@ export function MenuIngredientSummary({ data }: MenuIngredientSummaryProps) {
                   <Tooltip>
                     <TooltipTrigger>
                       <div className="flex items-center gap-1">
-                        <span className="truncate max-w-[200px]">
+                        <span className="max-w-[200px] truncate">
                           {ingredient.dishes.slice(0, 2).join(', ')}
                           {ingredient.dishes.length > 2 ? '...' : ''}
                         </span>
@@ -93,7 +93,7 @@ export function MenuIngredientSummary({ data }: MenuIngredientSummaryProps) {
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <ul className="list-disc list-inside">
+                      <ul className="list-inside list-disc">
                         {ingredient.dishes.map(dish => (
                           <li key={dish}>{dish}</li>
                         ))}

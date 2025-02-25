@@ -49,7 +49,7 @@ export function MainNav() {
   };
 
   return (
-    <div className="shadow-md bg-white">
+    <div className="bg-white shadow-md">
       <Sheet open={openMobile} onOpenChange={setOpenMobile}>
         <div className="flex h-16 items-center px-6">
           {/* Burger Menu (Mobile) */}
@@ -67,7 +67,7 @@ export function MainNav() {
           {/* Logo */}
           <Link
             href="/"
-            className="hover:opacity-80 transition-all ml-2 md:ml-0"
+            className="ml-2 transition-all hover:opacity-80 md:ml-0"
             aria-label={t('common.logo')}
           >
             <Image src="/images/logo.svg" alt={t('common.logo')} width={100} height={40} />
@@ -75,7 +75,7 @@ export function MainNav() {
 
           {/* Main Menu and Profile (Desktop only) */}
           <nav
-            className="hidden md:flex items-center ml-6 space-x-2"
+            className="ml-6 hidden items-center space-x-2 md:flex"
             aria-label={t('navigation.mainMenu')}
           >
             {items.map(item =>
@@ -86,7 +86,7 @@ export function MainNav() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    'flex items-center space-x-2 px-3 h-9 text-sm font-medium transition-colors hover:text-primary rounded-md',
+                    'flex h-9 items-center space-x-2 rounded-md px-3 text-sm font-medium transition-colors hover:text-primary',
                     'text-muted-foreground'
                   )}
                 >
@@ -98,7 +98,7 @@ export function MainNav() {
                   key={item.url}
                   href={item.url}
                   className={cn(
-                    'flex items-center space-x-2 px-3 h-9 text-sm font-medium transition-colors hover:text-primary rounded-md',
+                    'flex h-9 items-center space-x-2 rounded-md px-3 text-sm font-medium transition-colors hover:text-primary',
                     pathname === item.url ? 'text-primary' : 'text-muted-foreground'
                   )}
                 >
@@ -113,7 +113,7 @@ export function MainNav() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="flex items-center space-x-2 h-9 px-3 text-sm font-medium text-muted-foreground hover:text-primary"
+                  className="flex h-9 items-center space-x-2 px-3 text-sm font-medium text-muted-foreground hover:text-primary"
                 >
                   <User2 className="h-4 w-4" />
                   <span>{t('navigation.profile')}</span>
@@ -139,14 +139,14 @@ export function MainNav() {
           </nav>
 
           {/* Add Menu CTA */}
-          <div className="flex items-center ml-4">
+          <div className="ml-4 flex items-center">
             <Link href="/menus/new">
               <Button
                 variant="outline"
                 size="default"
-                className="h-9 px-3 bg-brand hover:bg-brand/90 text-brand-foreground border-0"
+                className="h-9 border-0 bg-brand px-3 text-brand-foreground hover:bg-brand/90"
               >
-                <Plus className="h-4 w-4 mr-1" />
+                <Plus className="mr-1 h-4 w-4" />
                 <span className="text-sm font-medium">{t('menus.add')}</span>
               </Button>
             </Link>
@@ -155,8 +155,8 @@ export function MainNav() {
 
         {/* Mobile Menu */}
         <SheetContent side="left" className="w-[280px] p-0">
-          <div className="flex flex-col h-full">
-            <div className="p-4 border-b">
+          <div className="flex h-full flex-col">
+            <div className="border-b p-4">
               <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
             </div>
             <nav className="flex-1 p-4" aria-label={t('navigation.mobile.menu')}>
@@ -167,7 +167,7 @@ export function MainNav() {
                   target={item.external ? '_blank' : undefined}
                   rel={item.external ? 'noopener noreferrer' : undefined}
                   className={cn(
-                    'flex items-center space-x-2 px-3 h-9 text-sm font-medium transition-colors hover:text-primary rounded-md mb-2',
+                    'mb-2 flex h-9 items-center space-x-2 rounded-md px-3 text-sm font-medium transition-colors hover:text-primary',
                     pathname === item.url ? 'text-primary' : 'text-muted-foreground'
                   )}
                 >
@@ -181,10 +181,10 @@ export function MainNav() {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="w-full flex items-center justify-between h-9 px-3 text-sm font-medium text-muted-foreground hover:text-primary"
+                    className="flex h-9 w-full items-center justify-between px-3 text-sm font-medium text-muted-foreground hover:text-primary"
                   >
                     <div className="flex items-center">
-                      <User2 className="h-4 w-4 mr-2" />
+                      <User2 className="mr-2 h-4 w-4" />
                       <span>{currentUser?.data?.email}</span>
                     </div>
                   </Button>

@@ -36,7 +36,7 @@ export function MenuViewer({ menu }: MenuViewerProps) {
   return (
     <div className="space-y-4">
       <Button onClick={handleDownload} className="w-full">
-        <Download className="w-4 h-4 mr-2" />
+        <Download className="mr-2 h-4 w-4" />
         {t('menus.download')}
       </Button>
     </div>

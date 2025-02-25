@@ -50,7 +50,7 @@ export function MenusView({ className, isGridView, sortBy }: MenusViewProps) {
       {isGridView ? (
         <MenusGridView menus={sortedMenus} />
       ) : (
-        <div className="border rounded-lg bg-white shadow-sm">
+        <div className="rounded-lg border bg-white shadow-sm">
           <MenusDataTable menus={sortedMenus} />
         </div>
       )}

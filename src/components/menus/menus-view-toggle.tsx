@@ -8,9 +8,9 @@ import { useTranslations } from 'next-intl';
 export function MenusViewToggle() {
   const [isGridView, setIsGridView] = useState(true);
   const t = useTranslations();
-  
+
   return (
-    <div className="flex gap-2 border rounded-lg p-1">
+    <div className="flex gap-2 rounded-lg border p-1">
       <Toggle
         pressed={!isGridView}
         onPressedChange={pressed => setIsGridView(!pressed)}

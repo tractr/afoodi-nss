@@ -144,7 +144,7 @@ function EditStepInputDialog({ step, open, onOpenChange, menuId }: EditStepInput
           <textarea
             value={input}
             onChange={e => setInput(e.target.value)}
-            className="w-full h-96 font-mono text-sm p-4 rounded-md border bg-muted/50"
+            className="h-96 w-full rounded-md border bg-muted/50 p-4 font-mono text-sm"
             spellCheck={false}
           />
         </div>
@@ -164,7 +164,7 @@ function EditStepInputDialog({ step, open, onOpenChange, menuId }: EditStepInput
 function StepHistoryDialog({ steps, open, onOpenChange, t }: StepHistoryDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-h-[80vh] max-w-4xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('menus.steps.history')}</DialogTitle>
         </DialogHeader>
@@ -183,8 +183,8 @@ function StepHistoryDialog({ steps, open, onOpenChange, t }: StepHistoryDialogPr
                         variant="secondary"
                         className={
                           step.error_message
-                            ? 'text-destructive bg-destructive/10'
-                            : 'text-green-500 bg-green-500/10'
+                            ? 'bg-destructive/10 text-destructive'
+                            : 'bg-green-500/10 text-green-500'
                         }
                       >
                         {step.error_message
@@ -196,23 +196,23 @@ function StepHistoryDialog({ steps, open, onOpenChange, t }: StepHistoryDialogPr
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    <div className="border rounded-lg p-3">
-                      <p className="text-sm font-medium mb-2">{t('menus.steps.input')}</p>
-                      <pre className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-md overflow-auto max-h-[200px] border">
+                    <div className="rounded-lg border p-3">
+                      <p className="mb-2 text-sm font-medium">{t('menus.steps.input')}</p>
+                      <pre className="max-h-[200px] overflow-auto rounded-md border bg-muted/50 p-4 text-sm text-muted-foreground">
                         {JSON.stringify(step.input, null, 2)}
                       </pre>
                     </div>
                     {step.output && (
-                      <div className="border rounded-lg p-3">
-                        <p className="text-sm font-medium mb-2">{t('menus.steps.output')}</p>
-                        <pre className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-md overflow-auto max-h-[200px] border">
+                      <div className="rounded-lg border p-3">
+                        <p className="mb-2 text-sm font-medium">{t('menus.steps.output')}</p>
+                        <pre className="max-h-[200px] overflow-auto rounded-md border bg-muted/50 p-4 text-sm text-muted-foreground">
                           {JSON.stringify(step.output, null, 2)}
                         </pre>
                       </div>
                     )}
                     {step.error_message && (
-                      <div className="bg-destructive/10 border-destructive/20 border rounded-lg p-3">
-                        <p className="text-sm font-medium text-destructive mb-1">
+                      <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3">
+                        <p className="mb-1 text-sm font-medium text-destructive">
                           {t('menus.steps.error')}
                         </p>
                         <p className="text-sm text-destructive/80">{step.error_message}</p>
@@ -272,7 +272,7 @@ function CancelStepDialog({ step, open, onOpenChange, t }: CancelStepDialogProps
         </DialogHeader>
         <div className="space-y-4">
           <div className="flex gap-2 text-muted-foreground">
-            <AlertCircle className="h-5 w-5 text-destructive shrink-0" />
+            <AlertCircle className="h-5 w-5 shrink-0 text-destructive" />
             <p>{t('menus.steps.cancelConfirmation')}</p>
           </div>
         </div>
@@ -381,8 +381,8 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
     label: string;
     canEdit?: boolean;
   }) => (
-    <div className="border rounded-lg p-3">
-      <div className="flex items-center justify-between mb-2">
+    <div className="rounded-lg border p-3">
+      <div className="mb-2 flex items-center justify-between">
         <p className="text-sm font-medium">{t(`menus.steps.${label}`)}</p>
         <div className="flex items-center gap-2">
           {canEdit && type !== 'menu_ocr' && step && (step.finished_at || step.error_message) && (
@@ -392,19 +392,19 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
               className="h-8 px-2"
               onClick={() => setIsEditInputOpen(true)}
             >
-              <Edit className="h-4 w-4 mr-1" />
+              <Edit className="mr-1 h-4 w-4" />
               {t('actions.edit')}
             </Button>
           )}
           <Button variant="ghost" size="sm" className="h-8 px-2" onClick={onToggle}>
             {isExpanded ? (
               <>
-                <ChevronUp className="h-4 w-4 mr-1" />
+                <ChevronUp className="mr-1 h-4 w-4" />
                 {t('menus.steps.collapse')}
               </>
             ) : (
               <>
-                <ChevronDown className="h-4 w-4 mr-1" />
+                <ChevronDown className="mr-1 h-4 w-4" />
                 {t('menus.steps.expand')}
               </>
             )}
@@ -412,7 +412,7 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
         </div>
       </div>
       {isExpanded && (
-        <pre className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-md overflow-auto max-h-[300px] border">
+        <pre className="max-h-[300px] overflow-auto rounded-md border bg-muted/50 p-4 text-sm text-muted-foreground">
           {JSON.stringify(data, null, 2)}
         </pre>
       )}
@@ -423,22 +423,22 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
     <>
       <Card
         key={type}
-        className="relative overflow-hidden border-0 border-b border-border last:border-b-0 rounded-none first:rounded-t-lg last:rounded-b-lg"
+        className="relative overflow-hidden rounded-none border-0 border-b border-border first:rounded-t-lg last:rounded-b-lg last:border-b-0"
       >
-        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-muted">
+        <div className="absolute bottom-0 left-0 top-0 w-1.5 bg-muted">
           <div
             className={cn(
-              'absolute inset-0 transition-all duration-300 ease-in-out h-full',
+              'absolute inset-0 h-full transition-all duration-300 ease-in-out',
               step?.finished_at ? 'bg-green-500' : step ? 'bg-blue-500/50' : 'h-0'
             )}
           />
         </div>
         <CardHeader
-          className="relative py-3 cursor-pointer hover:bg-muted/70 transition-colors bg-muted/30 border-b border-border"
+          className="relative cursor-pointer border-b border-border bg-muted/30 py-3 transition-colors hover:bg-muted/70"
           onClick={onToggleCollapse}
         >
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base flex items-center gap-4">
+            <CardTitle className="flex items-center gap-4 text-base">
               <div className="flex items-center gap-2">
                 {isCollapsed ? (
                   <ChevronDown className="h-4 w-4" />
@@ -446,7 +446,7 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
                   <ChevronUp className="h-4 w-4" />
                 )}
                 <span className="flex items-center gap-3">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary">
                     {stepNumber}
                   </span>
                   {t(`menus.steps.${type}`)}
@@ -512,7 +512,7 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
                     <p className="text-sm font-medium text-muted-foreground">
                       {t('menus.steps.duration')}
                     </p>
-                    <p className="text-sm flex items-center gap-1.5">
+                    <p className="flex items-center gap-1.5 text-sm">
                       {!step.finished_at && elapsedTime && (
                         <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
                       )}
@@ -524,15 +524,15 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
                             })
                           )
                         : elapsedTime
-                        ? formatDuration(elapsedTime)
-                        : '--:--'}
+                          ? formatDuration(elapsedTime)
+                          : '--:--'}
                     </p>
                   </div>
                 </div>
 
                 {step.error_message && (
-                  <div className="bg-destructive/10 border-destructive/20 border rounded-lg p-3">
-                    <p className="text-sm font-medium text-destructive mb-1">
+                  <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3">
+                    <p className="mb-1 text-sm font-medium text-destructive">
                       {t('menus.steps.error')}
                     </p>
                     <p className="text-sm text-destructive/80">{step.error_message}</p>
@@ -558,7 +558,7 @@ function StepCard({ steps, type, t, isCollapsed, onToggleCollapse, menuId }: Ste
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground italic">{t('menus.steps.notStarted')}</p>
+              <p className="text-sm italic text-muted-foreground">{t('menus.steps.notStarted')}</p>
             )}
           </CardContent>
         )}
@@ -579,35 +579,44 @@ export function MenuSteps({ menuId }: MenuStepsProps) {
   const { data: steps } = useMenuSteps(menuId);
   const t = useTranslations();
   const [collapsedSteps, setCollapsedSteps] = useState<Record<string, boolean>>(() =>
-    STEP_TYPES.reduce((acc, type) => {
-      acc[type] = false;
-      return acc;
-    }, {} as Record<string, boolean>)
+    STEP_TYPES.reduce(
+      (acc, type) => {
+        acc[type] = false;
+        return acc;
+      },
+      {} as Record<string, boolean>
+    )
   );
   const [allCollapsed, setAllCollapsed] = useState(false);
 
-  const stepsByType = STEP_TYPES.reduce((acc, type) => {
-    acc[type] = steps?.filter(step => step.step === type) || [];
-    return acc;
-  }, {} as Record<string, MenuStep[]>);
+  const stepsByType = STEP_TYPES.reduce(
+    (acc, type) => {
+      acc[type] = steps?.filter(step => step.step === type) || [];
+      return acc;
+    },
+    {} as Record<string, MenuStep[]>
+  );
 
   useEffect(() => {
     if (steps) {
       setCollapsedSteps(
-        STEP_TYPES.reduce((acc, type) => {
-          const typeSteps = stepsByType[type];
-          const latestStep =
-            typeSteps.length > 0
-              ? typeSteps.reduce((latest, current) =>
-                  new Date(current.created_at) > new Date(latest.created_at) ? current : latest
-                )
-              : undefined;
-          acc[type] =
-            latestStep?.finished_at && !latestStep.error_message && type !== 'menu_summary'
-              ? true
-              : false;
-          return acc;
-        }, {} as Record<string, boolean>)
+        STEP_TYPES.reduce(
+          (acc, type) => {
+            const typeSteps = stepsByType[type];
+            const latestStep =
+              typeSteps.length > 0
+                ? typeSteps.reduce((latest, current) =>
+                    new Date(current.created_at) > new Date(latest.created_at) ? current : latest
+                  )
+                : undefined;
+            acc[type] =
+              latestStep?.finished_at && !latestStep.error_message && type !== 'menu_summary'
+                ? true
+                : false;
+            return acc;
+          },
+          {} as Record<string, boolean>
+        )
       );
     }
   }, [steps]);
@@ -615,10 +624,13 @@ export function MenuSteps({ menuId }: MenuStepsProps) {
   const toggleAllCollapse = () => {
     const newState = !allCollapsed;
     setAllCollapsed(newState);
-    const newCollapsedSteps = STEP_TYPES.reduce((acc, type) => {
-      acc[type] = newState;
-      return acc;
-    }, {} as Record<string, boolean>);
+    const newCollapsedSteps = STEP_TYPES.reduce(
+      (acc, type) => {
+        acc[type] = newState;
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
     setCollapsedSteps(newCollapsedSteps);
   };
 
@@ -646,7 +658,7 @@ export function MenuSteps({ menuId }: MenuStepsProps) {
           )}
         </Button>
       </div>
-      <div className="border rounded-lg overflow-hidden">
+      <div className="overflow-hidden rounded-lg border">
         {STEP_TYPES.map(type => (
           <StepCard
             key={type}

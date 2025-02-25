@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <LayoutNav containerClassName="bg-muted/50">
       <div className="container mx-auto max-w-7xl py-4">
-        <div className="flex items-center justify-between mb-8 mt-4">
+        <div className="mb-8 mt-4 flex items-center justify-between">
           <h1 className="text-3xl font-bold">{t('menus.title')}</h1>
           <div className="flex items-center gap-4">
             <Select value={sortBy} onValueChange={value => setSortBy(value as SortOption)}>
@@ -39,12 +39,12 @@ export default function HomePage() {
               </SelectContent>
             </Select>
 
-            <div className="flex h-9 border bg-white rounded-md shadow-sm">
+            <div className="flex h-9 rounded-md border bg-white shadow-sm">
               <Toggle
                 pressed={isGridView}
                 onPressedChange={pressed => setIsGridView(pressed)}
                 aria-label={t('menus.gridView')}
-                className="h-full data-[state=on]:bg-accent rounded-none rounded-l-md"
+                className="h-full rounded-none rounded-l-md data-[state=on]:bg-accent"
               >
                 <LayoutGrid className="h-4 w-4" />
               </Toggle>
@@ -52,7 +52,7 @@ export default function HomePage() {
                 pressed={!isGridView}
                 onPressedChange={pressed => setIsGridView(!pressed)}
                 aria-label={t('menus.listView')}
-                className="h-full data-[state=on]:bg-accent rounded-none rounded-r-md"
+                className="h-full rounded-none rounded-r-md data-[state=on]:bg-accent"
               >
                 <List className="h-4 w-4" />
               </Toggle>

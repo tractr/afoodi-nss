@@ -77,7 +77,7 @@ export default function MainSidebar() {
   };
 
   return (
-    <Sidebar className="bg-background shadow-md z-10">
+    <Sidebar className="z-10 bg-background shadow-md">
       <SidebarHeader>
         <div className="flex items-center justify-between p-4 md:justify-center">
           <Image src="/images/logo.svg" alt={t('common.logo')} width={130} height={100} />
@@ -95,9 +95,9 @@ export default function MainSidebar() {
             <Button
               variant="outline"
               size="default"
-              className="w-full bg-brand hover:bg-brand/90 text-brand-foreground border-0"
+              className="w-full border-0 bg-brand text-brand-foreground hover:bg-brand/90"
             >
-              <Plus className="h-4 w-4 mr-1" />
+              <Plus className="mr-1 h-4 w-4" />
               <span className="text-sm font-medium">{t('menus.add')}</span>
             </Button>
           </Link>
@@ -119,7 +119,7 @@ export default function MainSidebar() {
                       target={item.external ? '_blank' : undefined}
                       rel={item.external ? 'noopener noreferrer' : undefined}
                     >
-                      <item.icon className="h-4 w-4 mr-2" />
+                      <item.icon className="mr-2 h-4 w-4" />
                       {t(item.titleKey)}
                     </Link>
                   </SidebarMenuButton>
@@ -134,10 +134,10 @@ export default function MainSidebar() {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="w-full flex items-center justify-between h-9 px-3 text-sm font-medium text-muted-foreground hover:text-primary"
+              className="flex h-9 w-full items-center justify-between px-3 text-sm font-medium text-muted-foreground hover:text-primary"
             >
               <div className="flex items-center">
-                <User2 className="h-4 w-4 mr-2" />
+                <User2 className="mr-2 h-4 w-4" />
                 <span>{currentUser?.data?.email}</span>
               </div>
               <ChevronUp className="h-4 w-4" />

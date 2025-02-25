@@ -13,16 +13,9 @@ interface ImageModalProps {
 export function ImageModal({ isOpen, onOpenChange, imageUrl, alt }: ImageModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[90vw] h-[90vh] p-0">
+      <DialogContent className="h-[90vh] max-w-[90vw] p-0">
         <div className="relative h-full w-full">
-          <Image
-            src={imageUrl}
-            alt={alt}
-            className="object-contain"
-            fill
-            priority
-            sizes="90vw"
-          />
+          <Image src={imageUrl} alt={alt} className="object-contain" fill priority sizes="90vw" />
         </div>
       </DialogContent>
     </Dialog>
